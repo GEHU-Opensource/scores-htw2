@@ -44,8 +44,179 @@
             padding: 16px;
             color: var(--dark-gray);
             line-height: 1.6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
+        /* Countdown Overlay */
+        .countdown-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease;
+        }
+
+        .countdown-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .countdown-container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 50px;
+            max-width: 900px;
+            width: 90%;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .countdown-title {
+            font-family: 'Luckiest Guy', cursive;
+            color: white;
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(255, 107, 53, 0.7);
+        }
+
+        .countdown-subtitle {
+            font-size: 1.4rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .launch-time {
+            font-size: 1.8rem;
+            color: var(--warning-yellow);
+            font-weight: 700;
+            margin-bottom: 40px;
+            font-family: 'Luckiest Guy', cursive;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(255, 193, 7, 0.5);
+        }
+
+        .countdown-timer {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .countdown-unit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 140px;
+        }
+
+        .countdown-value {
+            font-family: 'Luckiest Guy', cursive;
+            font-size: 4.5rem;
+            color: var(--accent-orange);
+            text-shadow: 0 0 15px rgba(255, 107, 53, 0.5);
+            background: rgba(0, 0, 0, 0.3);
+            width: 140px;
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 4px solid var(--accent-orange);
+            margin-bottom: 15px;
+            animation: pulse 2s infinite;
+        }
+
+        .countdown-label {
+            color: white;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+
+        .loading-bar {
+            width: 100%;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            margin: 40px 0;
+            overflow: hidden;
+        }
+
+        .loading-progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-orange), var(--warning-yellow));
+            width: 0%;
+            border-radius: 6px;
+            transition: width 1s linear;
+        }
+
+        .countdown-message {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.2rem;
+            margin-top: 30px;
+            line-height: 1.6;
+        }
+
+        .countdown-icon {
+            font-size: 3.5rem;
+            color: var(--accent-orange);
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        .show-results-btn {
+            background: linear-gradient(135deg, var(--accent-orange), var(--warning-yellow));
+            color: white;
+            border: none;
+            padding: 20px 50px;
+            font-size: 1.4rem;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 40px;
+            transition: all 0.3s ease;
+            display: none;
+            font-family: 'Luckiest Guy', cursive;
+            letter-spacing: 1px;
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+        }
+
+        .show-results-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.4);
+        }
+
+        .timezone-info {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            margin-top: 15px;
+            font-style: italic;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 107, 53, 0.7); }
+            50% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(255, 107, 53, 0); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* Main Container */
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -55,6 +226,12 @@
             box-shadow: var(--shadow);
             overflow: hidden;
             padding: 24px;
+            display: none;
+        }
+
+        .container.visible {
+            display: block;
+            animation: fadeIn 0.8s ease;
         }
 
         /* Header */
@@ -125,9 +302,6 @@
         .legend-gold { background: var(--gold-color); }
         .legend-silver { background: var(--silver-color); }
         .legend-bronze { background: var(--bronze-color); }
-        .legend-top10 { background: var(--top10-color); border: 2px solid #FFD700; }
-        .legend-top20 { background: var(--top20-color); border: 2px solid #C0C0C0; }
-        .legend-top30 { background: var(--top30-color); border: 2px solid #CD7F32; }
 
         /* Stats Bar */
         .stats-bar {
@@ -406,6 +580,28 @@
                 border-radius: 12px;
             }
 
+            .countdown-container {
+                padding: 30px;
+            }
+
+            .countdown-value {
+                font-size: 3rem;
+                width: 100px;
+                height: 100px;
+            }
+
+            .countdown-unit {
+                min-width: 100px;
+            }
+
+            .countdown-timer {
+                gap: 15px;
+            }
+
+            .launch-time {
+                font-size: 1.4rem;
+            }
+
             .percentile-legend {
                 gap: 8px;
             }
@@ -461,6 +657,32 @@
                 padding: 12px;
             }
 
+            .countdown-container {
+                padding: 20px;
+            }
+
+            .countdown-timer {
+                flex-wrap: wrap;
+            }
+
+            .countdown-unit {
+                min-width: 80px;
+            }
+
+            .countdown-value {
+                font-size: 2.5rem;
+                width: 80px;
+                height: 80px;
+            }
+
+            .countdown-label {
+                font-size: 1rem;
+            }
+
+            .launch-time {
+                font-size: 1.2rem;
+            }
+
             .percentile-legend {
                 flex-direction: column;
                 align-items: stretch;
@@ -514,7 +736,7 @@
 
         /* Animation for new entries */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -556,7 +778,50 @@
 </head>
 
 <body>
-<div class="container">
+<!-- Countdown Overlay -->
+<div class="countdown-overlay" id="countdownOverlay">
+    <div class="countdown-container">
+        <div class="countdown-icon">
+            <i class="fas fa-rocket"></i>
+        </div>
+        <h1 class="countdown-title">RESULTS LAUNCHING SOON</h1>
+        <p class="countdown-subtitle">Hack the Winter 2026 • Slingshot Round</p>
+        <div class="launch-time" id="launchTime">Today at 10:30 PM</div>
+
+        <div class="countdown-timer">
+            <div class="countdown-unit">
+                <div class="countdown-value" id="hours">00</div>
+                <div class="countdown-label">Hours</div>
+            </div>
+            <div class="countdown-unit">
+                <div class="countdown-value" id="minutes">00</div>
+                <div class="countdown-label">Minutes</div>
+            </div>
+            <div class="countdown-unit">
+                <div class="countdown-value" id="seconds">00</div>
+                <div class="countdown-label">Seconds</div>
+            </div>
+        </div>
+
+        <div class="loading-bar">
+            <div class="loading-progress" id="loadingProgress"></div>
+        </div>
+
+        <p class="countdown-message">
+            Final scores are being calculated and verified...<br>
+            Get ready to see where your team ranks!
+        </p>
+
+        <div class="timezone-info" id="timezoneInfo">Local Time: Detecting...</div>
+
+        <button class="show-results-btn" id="showResultsBtn">
+            <i class="fas fa-bolt"></i> SKIP COUNTDOWN
+        </button>
+    </div>
+</div>
+
+<!-- Main Content Container -->
+<div class="container" id="mainContainer">
     <div class="header">
         <h1>HACK THE WINTER</h1>
         <div class="subtitle">Slingshot Round Results • Winter Hackathon 2026</div>
@@ -625,6 +890,160 @@
 </div>
 
 <script>
+    // Countdown to Today at 10:15 PM
+    function getLaunchTime() {
+        const now = new Date();
+        const launchTime = new Date();
+
+        // Set launch time to today at 10:30 PM
+        launchTime.setHours(22, 30, 0, 0); // 10:30 PM
+
+        // If it's already past 10:30 PM today, set for tomorrow
+        if (now > launchTime) {
+            launchTime.setDate(launchTime.getDate() + 1);
+        }
+
+        return launchTime;
+    }
+
+    let launchTime = getLaunchTime();
+    let countdownInterval;
+    let resultsRevealed = false;
+    let totalDuration = launchTime - new Date(); // Total milliseconds until launch
+
+    // Initialize countdown
+    document.addEventListener('DOMContentLoaded', function() {
+        // Display launch time
+        const launchTimeStr = launchTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        const launchDateStr = launchTime.toLocaleDateString([], {weekday: 'long', month: 'long', day: 'numeric'});
+        document.getElementById('launchTime').textContent = `${launchDateStr} at ${launchTimeStr}`;
+
+        // Display timezone
+        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        document.getElementById('timezoneInfo').textContent = `Local Time: ${timezone}`;
+
+        startCountdown();
+        fetchData(); // Start loading data in background
+    });
+
+    function startCountdown() {
+        updateCountdownDisplay();
+
+        countdownInterval = setInterval(() => {
+            updateCountdownDisplay();
+
+            // Check if it's time to reveal results
+            const now = new Date();
+            if (now >= launchTime && !resultsRevealed) {
+                revealResults();
+            }
+        }, 1000);
+    }
+
+    function updateCountdownDisplay() {
+        const now = new Date();
+        const timeLeft = launchTime - now;
+
+        // Calculate hours, minutes, seconds
+        const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+        // Update display
+        document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+        document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+        document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+
+        // Update progress bar
+        const timeElapsed = totalDuration - timeLeft;
+        const progressPercentage = Math.min((timeElapsed / totalDuration) * 100, 100);
+        document.getElementById('loadingProgress').style.width = progressPercentage + '%';
+
+        // Show skip button when less than 30 minutes left
+        if (timeLeft < 30 * 60 * 1000) {
+            document.getElementById('showResultsBtn').style.display = 'block';
+        }
+
+        // Change color when less than 5 minutes
+        if (timeLeft < 5 * 60 * 1000) {
+            document.querySelectorAll('.countdown-value').forEach(el => {
+                el.style.color = '#FF5252';
+                el.style.borderColor = '#FF5252';
+            });
+        }
+    }
+
+    function revealResults() {
+        clearInterval(countdownInterval);
+        resultsRevealed = true;
+
+        // Add fade out animation
+        document.getElementById('countdownOverlay').classList.add('hidden');
+
+        // Show main container after fade out
+        setTimeout(() => {
+            document.getElementById('countdownOverlay').style.display = 'none';
+            document.getElementById('mainContainer').classList.add('visible');
+
+            // Now render the results since they should be loaded
+            if (allTeams.length > 0) {
+                renderStats();
+                renderPage(1);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('scoreTable').style.display = 'table';
+                document.getElementById('pagination').style.display = 'flex';
+            }
+        }, 500);
+
+        // Add confetti effect
+        createConfetti();
+    }
+
+    function skipCountdown() {
+        if (!resultsRevealed) {
+            // Set launch time to now
+            launchTime = new Date();
+            revealResults();
+        }
+    }
+
+    // Event listener for skip button
+    document.getElementById('showResultsBtn').addEventListener('click', skipCountdown);
+
+    // Confetti effect function
+    function createConfetti() {
+        const colors = ['#FF5252', '#FF4081', '#E040FB', '#7C4DFF', '#536DFE', '#448AFF', '#40C4FF', '#18FFFF', '#64FFDA', '#69F0AE'];
+
+        for (let i = 0; i < 200; i++) {
+            setTimeout(() => {
+                const confetti = document.createElement('div');
+                confetti.style.position = 'fixed';
+                confetti.style.width = Math.random() * 12 + 8 + 'px';
+                confetti.style.height = Math.random() * 12 + 8 + 'px';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0%';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.top = '-20px';
+                confetti.style.zIndex = '9999';
+                confetti.style.opacity = '0.9';
+
+                document.body.appendChild(confetti);
+
+                // Animate confetti
+                const animation = confetti.animate([
+                    { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
+                    { transform: `translateY(${window.innerHeight}px) rotate(${Math.random() * 720}deg)`, opacity: 0 }
+                ], {
+                    duration: Math.random() * 3000 + 2000,
+                    easing: 'cubic-bezier(0.215, 0.610, 0.355, 1)'
+                });
+
+                animation.onfinish = () => confetti.remove();
+            }, i * 20);
+        }
+    }
+
+    // Original Results Code
     const PAGE_SIZE = 20;
     let tableData = null;
     let allTeams = [];
@@ -637,11 +1056,6 @@
         SILVER: 0.2,    // Next 10% (10-20%)
         BRONZE: 0.3     // Next 10% (20-30%)
     };
-
-    // Initialize the page
-    document.addEventListener('DOMContentLoaded', function() {
-        fetchData();
-    });
 
     async function fetchData() {
         try {
@@ -703,13 +1117,15 @@
         });
 
         filteredTeams = allTeams;
-        renderStats();
-        renderPage(1);
 
-        // Hide loading, show table
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('scoreTable').style.display = 'table';
-        document.getElementById('pagination').style.display = 'flex';
+        // If results are already revealed (user skipped countdown), render immediately
+        if (resultsRevealed) {
+            renderStats();
+            renderPage(1);
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('scoreTable').style.display = 'table';
+            document.getElementById('pagination').style.display = 'flex';
+        }
     }
 
     function renderStats() {
@@ -784,6 +1200,8 @@
     }
 
     function renderPage(page) {
+        if (!resultsRevealed) return;
+
         currentPage = page;
         const start = (page - 1) * PAGE_SIZE;
         const end = start + PAGE_SIZE;

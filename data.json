@@ -11,6 +11,7 @@
   "teams": [
     { "name": "Runtime Error", "scores": [7,6,6,6,6] },
     { "name": "Power Nexus", "scores": [8,7,6,7,6] },
+    { "name": "AngryBomb", "scores": [9,7,6,9,9] },
     { "name": "TechX", "scores": [6,6,6,6,6] },
     { "name": "Binary Bandits", "scores": [9,8,8,7,8] },
     { "name": "DEV X", "scores": [7,7,6,6,6] },
