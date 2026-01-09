@@ -4,248 +4,235 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hackathon Results – Slingshot Round</title>
+
     <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --bg-sky: #4fc3f7;
             --ground-brown: #8d6e63;
             --bird-red: #e53935;
             --pig-green: #7cb342;
-            --wood-light: #ffcc80;
             --wood-dark: #bcaaa4;
-            --tnt-orange: #ff7043;
         }
 
         body {
             font-family: 'Open Sans', sans-serif;
             background: linear-gradient(to bottom, #4fc3f7 0%, #b3e5fc 70%, #8d6e63 100%);
-            background-attachment: fixed;
-            color: #333;
-            margin: 0;
             padding: 40px 20px;
-            min-height: 100vh;
         }
 
         .container {
             max-width: 900px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.15);
+            margin: auto;
+            background: rgba(255,255,255,0.15);
             backdrop-filter: blur(8px);
             border-radius: 30px;
             padding: 30px;
-            border: 8px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 20px 0 rgba(0,0,0,0.1);
         }
 
         h1 {
-            font-family: 'Luckiest Guy', cursive;
-            font-size: 4rem;
+            font-family: 'Luckiest Guy';
             text-align: center;
             color: white;
-            text-shadow: 4px 4px 0px var(--bird-red), 8px 8px 0px rgba(0,0,0,0.2);
-            margin-bottom: 10px;
-            letter-spacing: 2px;
-            transform: rotate(-2deg);
+            font-size: 4rem;
+            text-shadow: 4px 4px 0 var(--bird-red);
         }
 
         .subtitle {
             text-align: center;
             font-weight: bold;
-            color: #01579b;
-            margin-bottom: 30px;
-            text-transform: uppercase;
+            margin-bottom: 20px;
         }
 
-        /* Styled Table */
+        #searchBox {
+            width: 260px;
+            padding: 8px 14px;
+            border-radius: 18px;
+            border: none;
+            font-size: 14px;
+        }
+
         .table-wrapper {
-            overflow-x: auto;
+            background: white;
             border-radius: 20px;
-            background: #fff;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow-x: auto;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            border: none;
         }
 
         th {
             background: var(--ground-brown);
             color: white;
-            padding: 20px;
-            font-family: 'Luckiest Guy', cursive;
-            font-size: 1.2rem;
-            letter-spacing: 1px;
+            padding: 16px;
+            font-family: 'Luckiest Guy';
         }
 
         td {
-            padding: 18px;
+            padding: 14px;
+            border-bottom: 1px solid #eee;
             text-align: center;
-            border-bottom: 2px solid #eee;
             font-weight: 700;
         }
 
-        /* Rank Badges */
         .rank-circle {
-            width: 40px;
-            height: 40px;
-            line-height: 40px;
+            width: 36px;
+            height: 36px;
+            line-height: 36px;
+            border-radius: 50%;
             background: #ccc;
             color: white;
-            border-radius: 50%;
             display: inline-block;
-            font-family: 'Luckiest Guy', cursive;
+            font-family: 'Luckiest Guy';
         }
 
-        /* Percentile Themes */
-        .top-10 { background: #fff9c4; } /* Golden Eagle Zone */
-        .top-10 .rank-circle { background: #fbc02d; transform: scale(1.2); box-shadow: 0 0 10px gold; }
-        .top-10 td { color: #f57f17; }
+        .top-10 { background: #fff9c4; }
+        .top-10 .rank-circle { background: #fbc02d; }
 
-        .top-20 { background: #f1f8e9; } /* King Pig Zone */
+        .top-20 { background: #f1f8e9; }
         .top-20 .rank-circle { background: var(--pig-green); }
 
-        .top-40 { background: #efebe9; } /* Wooden Block Zone */
+        .top-40 { background: #efebe9; }
         .top-40 .rank-circle { background: var(--wood-dark); }
 
         .total-score {
-            font-family: 'Luckiest Guy', cursive;
-            font-size: 1.4rem;
+            font-family: 'Luckiest Guy';
             color: var(--bird-red);
         }
 
-        /* Animations */
-        tr { transition: transform 0.2s ease; cursor: pointer; }
-        tr:hover {
-            transform: scale(1.02);
-            background-color: #e3f2fd !important;
-            z-index: 10;
-        }
-
-        /* Legend */
-        .legend {
-            margin-top: 30px;
+        #pagination {
+            margin-top: 16px;
             display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .legend-item {
-            background: white;
-            padding: 10px 20px;
-            border-radius: 50px;
-            box-shadow: 0 4px 0 rgba(0,0,0,0.1);
-            display: flex;
+            justify-content: flex-end;
             align-items: center;
-            font-weight: bold;
+            gap: 8px;
+            font-size: 14px;
         }
 
-        .box {
-            width: 20px;
-            height: 20px;
-            border-radius: 4px;
-            margin-right: 10px;
+        #pagination button {
+            padding: 4px 10px;
+            border-radius: 14px;
+            border: none;
+            font-size: 13px;
+            cursor: pointer;
+            background: #8d6e63;
+            color: white;
+        }
+
+        #pagination button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        button {
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: none;
+            margin: 0 5px;
+            cursor: pointer;
         }
     </style>
 </head>
-<body>
 
+<body>
 <div class="container">
-    <h1>Level Complete!</h1>
-    <div class="subtitle">Round 1 Scores & Percentiles</div>
+    <h1>Hack The Winter!</h1>
+
+    <div style="display:flex; justify-content:flex-end; margin-bottom:16px;">
+        <input id="searchBox" placeholder="Search Team" oninput="applySearch()"/>
+    </div>
 
     <div class="table-wrapper">
-        <table id="scoreTable">
-        </table>
+        <table id="scoreTable"></table>
     </div>
-    <div id="pagination" style="margin-top:20px; text-align:center;"></div>
 
-    <div class="legend">
-        <div class="legend-item"><span class="box" style="background:#fbc02d"></span> 3 Stars (Top 10%)</div>
-        <div class="legend-item"><span class="box" style="background:#7cb342"></span> 2 Stars (Top 20%)</div>
-        <div class="legend-item"><span class="box" style="background:#bcaaa4"></span> 1 Star (Top 40%)</div>
-    </div>
+    <div id="pagination"></div>
 </div>
 
 <script>
-    let tableData = null;
     const PAGE_SIZE = 50;
-    let currentPage = 1;
+
+    let tableData = null;
     let allTeams = [];
+    let filteredTeams = [];
+    let currentPage = 1;
 
     fetch("data.json")
-        .then(res => res.json())
+        .then(r => r.json())
         .then(data => {
             tableData = data;
-            allTeams = prepareTeams(data);
+            allTeams = data.teams
+                .map(t => ({ ...t, total: t.scores.reduce((a,b)=>a+b,0) }))
+                .sort((a,b)=>b.total-a.total);
+
+            filteredTeams = allTeams;
             renderPage(1);
-        })
-        .catch(err => {
-            console.error("Failed to load data.json", err);
         });
 
-    function prepareTeams(data) {
-        return data.teams
-            .map(t => ({
-                ...t,
-                total: t.scores.reduce((a, b) => a + b, 0)
-            }))
-            .sort((a, b) => b.total - a.total);
+    function applySearch() {
+        const q = document
+            .getElementById("searchBox")
+            .value
+            .toLowerCase()
+            .replace(/\s+/g, " ")
+            .trim();
+
+        filteredTeams = q
+            ? allTeams.filter(t =>
+                t.name.toLowerCase().includes(q)
+            )
+            : allTeams;
+
+        renderPage(1);
     }
 
     function renderPage(page) {
         currentPage = page;
-        const table = document.getElementById("scoreTable");
-        const pagination = document.getElementById("pagination");
 
         const start = (page - 1) * PAGE_SIZE;
         const end = start + PAGE_SIZE;
-        const teams = allTeams.slice(start, end);
+        const teams = filteredTeams.slice(start, end);
 
-        const n = allTeams.length;
-
-        const greenCount  = Math.max(1, Math.ceil(n * 0.10));
-        const aquaCount   = Math.max(1, Math.ceil(n * 0.10));
-        const yellowCount = Math.max(1, Math.ceil(n * 0.20));
+        const n = filteredTeams.length;
+        const top10 = Math.ceil(n * 0.10);
+        const top20 = Math.ceil(n * 0.20);
+        const top40 = Math.ceil(n * 0.40);
 
         const header = `
-            <tr>
-                <th>#</th>
-                <th>Team Name</th>
-                ${tableData.factors.map(f => `<th>${f}</th>`).join("")}
-                <th>Total / ${tableData.max_score}</th>
-            </tr>
-        `;
+        <tr>
+            <th>#</th>
+            <th>Team Name</th>
+            ${tableData.factors.map(f=>`<th>${f}</th>`).join("")}
+            <th>Total</th>
+        </tr>`;
 
-        const rows = teams.map((t, i) => {
-            const globalIndex = start + i;
+        const rows = teams.map((t,i)=>{
+            const idx = start + i;
             let cls = "";
-            if (globalIndex < greenCount) cls = "top-10";
-            else if (globalIndex < greenCount + aquaCount) cls = "top-20";
-            else if (globalIndex < greenCount + aquaCount + yellowCount) cls = "top-40";
+            if (idx < top10) cls = "top-10";
+            else if (idx < top20) cls = "top-20";
+            else if (idx < top40) cls = "top-40";
 
             return `
-                <tr class="${cls}">
-                    <td><span class="rank-circle">${globalIndex + 1}</span></td>
-                    <td style="text-align:left; padding-left:40px;">${t.name}</td>
-                    ${t.scores.map(s => `<td>${s}</td>`).join("")}
-                    <td class="total-score">${t.total}</td>
-                </tr>
-            `;
+        <tr class="${cls}">
+            <td><span class="rank-circle">${idx+1}</span></td>
+            <td style="text-align:left">${t.name}</td>
+            ${t.scores.map(s=>`<td>${s}</td>`).join("")}
+            <td class="total-score">${t.total}</td>
+        </tr>`;
         }).join("");
 
-        table.innerHTML = header + rows;
+        document.getElementById("scoreTable").innerHTML = header + rows;
 
         const totalPages = Math.ceil(n / PAGE_SIZE);
-        pagination.innerHTML = `
-            <button onclick="renderPage(${page - 1})" ${page === 1 ? "disabled" : ""}>Prev</button>
-            <span style="margin:0 10px;">Page ${page} / ${totalPages}</span>
-            <button onclick="renderPage(${page + 1})" ${page === totalPages ? "disabled" : ""}>Next</button>
-        `;
+        document.getElementById("pagination").innerHTML = `
+        <button onclick="renderPage(${page-1})" ${page===1?"disabled":""}>Prev</button>
+        Page ${page} / ${totalPages}
+        <button onclick="renderPage(${page+1})" ${page===totalPages?"disabled":""}>Next</button>
+    `;
     }
 </script>
-
 </body>
 </html>
