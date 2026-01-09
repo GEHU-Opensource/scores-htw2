@@ -2,236 +2,899 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>Hackathon Results – Slingshot Round</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
-            --ground-brown: #8d6e63;
-            --bird-red: #e53935;
-            --pig-green: #7cb342;
-            --wood-dark: #bcaaa4;
+            --primary-blue: #1a73e8;
+            --secondary-blue: #34a4dc;
+            --accent-orange: #ff6b35;
+            --success-green: #4caf50;
+            --warning-yellow: #ffc107;
+            --dark-gray: #2d3748;
+            --light-gray: #f8f9fa;
+            --border-radius: 16px;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+
+            /* Percentile Colors */
+            --gold-color: linear-gradient(135deg, #FFD700, #FFA500);
+            --silver-color: linear-gradient(135deg, #C0C0C0, #A0A0A0);
+            --bronze-color: linear-gradient(135deg, #CD7F32, #A0522D);
+            --top10-color: #fff9e6;
+            --top20-color: #f5f5f5;
+            --top30-color: #f0f8ff;
+            --default-color: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
             font-family: 'Open Sans', sans-serif;
-            background: linear-gradient(to bottom, #4fc3f7 0%, #b3e5fc 70%, #8d6e63 100%);
-            padding: 40px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 16px;
+            color: var(--dark-gray);
+            line-height: 1.6;
         }
 
         .container {
-            max-width: 900px;
-            margin: auto;
-            background: rgba(255,255,255,0.15);
-            backdrop-filter: blur(8px);
-            border-radius: 30px;
-            padding: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            padding: 24px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.05);
         }
 
         h1 {
-            font-family: 'Luckiest Guy';
-            text-align: center;
-            color: white;
-            font-size: 4rem;
-            text-shadow: 4px 4px 0 var(--bird-red);
+            font-family: 'Luckiest Guy', cursive;
+            color: var(--primary-blue);
+            font-size: clamp(2.8rem, 8vw, 4.2rem);
+            margin: 10px 0;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+            position: relative;
+            display: inline-block;
+        }
+
+        h1:after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 4px;
+            background: linear-gradient(to right, var(--accent-orange), var(--warning-yellow));
+            border-radius: 2px;
         }
 
         .subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            margin-top: 20px;
+            font-weight: 600;
+        }
+
+        /* Percentile Legend */
+        .percentile-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 25px;
+            justify-content: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border-radius: 10px;
+            background: var(--light-gray);
+            font-weight: 600;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+
+        .legend-gold { background: var(--gold-color); }
+        .legend-silver { background: var(--silver-color); }
+        .legend-bronze { background: var(--bronze-color); }
+        .legend-top10 { background: var(--top10-color); border: 2px solid #FFD700; }
+        .legend-top20 { background: var(--top20-color); border: 2px solid #C0C0C0; }
+        .legend-top30 { background: var(--top30-color); border: 2px solid #CD7F32; }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+            background: var(--light-gray);
+            padding: 18px 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-card {
             text-align: center;
-            font-weight: bold;
-            margin-bottom: 20px;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            font-family: 'Luckiest Guy', cursive;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* Search and Controls */
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+            align-items: center;
+        }
+
+        .search-container {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #aaa;
+            z-index: 2;
         }
 
         #searchBox {
-            width: 260px;
-            padding: 8px 14px;
-            border-radius: 18px;
-            border: none;
-            font-size: 14px;
+            width: 100%;
+            padding: 16px 20px 16px 50px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: var(--transition);
+            background: white;
         }
 
-        .table-wrapper {
+        #searchBox:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.2);
+        }
+
+        .results-info {
+            font-size: 0.95rem;
+            color: #666;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .highlight {
+            color: var(--primary-blue);
+            font-weight: 700;
+        }
+
+        /* Table Container */
+        .table-container {
             background: white;
-            border-radius: 20px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            margin-bottom: 25px;
             overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        thead {
+            background: linear-gradient(to right, var(--primary-blue), var(--secondary-blue));
+            color: white;
         }
 
         th {
-            background: var(--ground-brown);
-            color: white;
-            padding: 16px;
-            font-family: 'Luckiest Guy';
+            padding: 20px 16px;
+            text-align: left;
+            font-weight: 600;
+            font-family: 'Open Sans', sans-serif;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        th:first-child {
+            border-top-left-radius: 12px;
+        }
+
+        th:last-child {
+            border-top-right-radius: 12px;
+        }
+
+        .team-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .team-header i {
+            font-size: 0.9rem;
         }
 
         td {
-            padding: 14px;
-            border-bottom: 1px solid #eee;
+            padding: 18px 16px;
+            border-bottom: 1px solid #f1f1f1;
+            transition: var(--transition);
+        }
+
+        /* Percentile-based row coloring */
+        .gold-percentile {
+            background-color: var(--top10-color) !important;
+            border-left: 4px solid #FFD700;
+        }
+
+        .silver-percentile {
+            background-color: var(--top20-color) !important;
+            border-left: 4px solid #C0C0C0;
+        }
+
+        .bronze-percentile {
+            background-color: var(--top30-color) !important;
+            border-left: 4px solid #CD7F32;
+        }
+
+        .default-percentile {
+            background-color: var(--default-color);
+            border-left: 4px solid #e2e8f0;
+        }
+
+        tr:hover td {
+            filter: brightness(0.98);
+        }
+
+        /* Rank Styling */
+        .rank-cell {
             text-align: center;
             font-weight: 700;
         }
 
-        .rank-circle {
+        .rank-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            font-family: 'Luckiest Guy', cursive;
+            font-size: 1.1rem;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Percentile-based rank badges */
+        .rank-gold { background: var(--gold-color); }
+        .rank-silver { background: var(--silver-color); }
+        .rank-bronze { background: var(--bronze-color); }
+        .rank-default { background: var(--primary-blue); }
+
+        /* Team Name Styling */
+        .team-name {
+            font-weight: 700;
+            color: var(--dark-gray);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .team-avatar {
             width: 36px;
             height: 36px;
-            line-height: 36px;
             border-radius: 50%;
-            background: #ccc;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: white;
-            display: inline-block;
-            font-family: 'Luckiest Guy';
+            font-weight: 700;
+            font-size: 0.9rem;
         }
 
-        .top-10 { background: #fff9c4; }
-        .top-10 .rank-circle { background: #fbc02d; }
-
-        .top-20 { background: #f1f8e9; }
-        .top-20 .rank-circle { background: var(--pig-green); }
-
-        .top-40 { background: #efebe9; }
-        .top-40 .rank-circle { background: var(--wood-dark); }
+        /* Score Cells */
+        .score-cell {
+            font-weight: 700;
+            text-align: center;
+        }
 
         .total-score {
-            font-family: 'Luckiest Guy';
-            color: var(--bird-red);
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: var(--primary-blue);
+            text-align: center;
         }
 
-        #pagination {
-            margin-top: 16px;
+        /* Pagination */
+        .pagination {
             display: flex;
-            justify-content: flex-end;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .pagination button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            background: var(--light-gray);
+            color: var(--dark-gray);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 14px;
+            min-width: 120px;
+            justify-content: center;
         }
 
-        #pagination button {
-            padding: 4px 10px;
-            border-radius: 14px;
-            border: none;
-            font-size: 13px;
-            cursor: pointer;
-            background: #8d6e63;
+        .pagination button:hover:not(:disabled) {
+            background: var(--primary-blue);
             color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.3);
         }
 
-        #pagination button:disabled {
-            opacity: 0.4;
+        .pagination button:disabled {
+            opacity: 0.5;
             cursor: not-allowed;
         }
 
-        button {
-            padding: 8px 16px;
-            border-radius: 20px;
-            border: none;
-            margin: 0 5px;
-            cursor: pointer;
+        .page-info {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--dark-gray);
+            padding: 0 20px;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px;
+                border-radius: 12px;
+            }
+
+            .percentile-legend {
+                gap: 8px;
+            }
+
+            .legend-item {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+
+            .stats-bar {
+                padding: 15px;
+                gap: 10px;
+            }
+
+            .stat-card {
+                min-width: calc(50% - 10px);
+            }
+
+            .stat-value {
+                font-size: 1.7rem;
+            }
+
+            th, td {
+                padding: 14px 12px;
+                font-size: 0.95rem;
+            }
+
+            .pagination {
+                gap: 8px;
+            }
+
+            .pagination button {
+                padding: 10px 16px;
+                min-width: 100px;
+                font-size: 0.9rem;
+            }
+
+            .page-info {
+                order: 3;
+                width: 100%;
+                text-align: center;
+                margin-top: 10px;
+                padding: 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 12px;
+            }
+
+            .percentile-legend {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .legend-item {
+                justify-content: center;
+            }
+
+            .stats-bar {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .stat-card {
+                width: 100%;
+                min-width: 100%;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-container {
+                min-width: 100%;
+            }
+
+            th, td {
+                padding: 12px 8px;
+                font-size: 0.9rem;
+            }
+
+            .team-avatar {
+                width: 32px;
+                height: 32px;
+                font-size: 0.8rem;
+            }
+
+            .rank-badge {
+                width: 36px;
+                height: 36px;
+                font-size: 1rem;
+            }
+
+            .pagination button {
+                min-width: 80px;
+                padding: 10px 12px;
+            }
+        }
+
+        /* Animation for new entries */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        tr {
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        /* Loading state */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-size: 1.2rem;
+        }
+
+        .loading i {
+            color: var(--primary-blue);
+            margin-right: 10px;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+
+        .empty-state h3 {
+            color: #999;
+            margin-bottom: 10px;
         }
     </style>
 </head>
 
 <body>
 <div class="container">
-    <h1>Hack The Winter!</h1>
-
-    <div style="display:flex; justify-content:flex-end; margin-bottom:16px;">
-        <input id="searchBox" placeholder="Search Team" oninput="applySearch()"/>
+    <div class="header">
+        <h1>HACK THE WINTER</h1>
+        <div class="subtitle">Slingshot Round Results • Winter Hackathon 2026</div>
     </div>
 
-    <div class="table-wrapper">
-        <table id="scoreTable"></table>
+    <!-- Percentile Legend -->
+    <div class="percentile-legend">
+        <div class="legend-item">
+            <div class="legend-color legend-gold"></div>
+            <span>Top 10% (Gold)</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color legend-silver"></div>
+            <span>Next 10% (Silver)</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color legend-bronze"></div>
+            <span>Next 10% (Bronze)</span>
+        </div>
     </div>
 
-    <div id="pagination"></div>
+    <div class="stats-bar">
+        <div class="stat-card">
+            <div class="stat-value" id="totalTeams">0</div>
+            <div class="stat-label">Total Teams</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value" id="avgScore">0</div>
+            <div class="stat-label">Average Score</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value" id="topScore">0</div>
+            <div class="stat-label">Top Score</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value" id="filteredCount">0</div>
+            <div class="stat-label">Displayed Teams</div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <div class="search-container">
+            <i class="fas fa-search search-icon"></i>
+            <input id="searchBox" placeholder="Search by team name..." oninput="applySearch()"/>
+        </div>
+        <div class="results-info">
+            Showing <span class="highlight" id="resultsCount">0</span> of <span class="highlight" id="totalCount">0</span> teams
+        </div>
+    </div>
+
+    <div class="table-container">
+        <div id="loading" class="loading">
+            <i class="fas fa-spinner fa-spin"></i> Loading results...
+        </div>
+
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <i class="fas fa-search"></i>
+            <h3>No teams found</h3>
+            <p>Try adjusting your search query</p>
+        </div>
+
+        <table id="scoreTable" style="display: none;"></table>
+    </div>
+
+    <div class="pagination" id="pagination" style="display: none;"></div>
 </div>
 
 <script>
-    const PAGE_SIZE = 50;
-
+    const PAGE_SIZE = 20;
     let tableData = null;
     let allTeams = [];
     let filteredTeams = [];
     let currentPage = 1;
 
-    fetch("data.json")
-        .then(r => r.json())
-        .then(data => {
-            tableData = data;
-            allTeams = data.teams
-                .map(t => ({ ...t, total: t.scores.reduce((a,b)=>a+b,0) }))
-                .sort((a,b)=>b.total-a.total);
+    // Percentile configuration
+    const PERCENTILES = {
+        GOLD: 0.1,      // Top 10%
+        SILVER: 0.2,    // Next 10% (10-20%)
+        BRONZE: 0.3     // Next 10% (20-30%)
+    };
 
-            filteredTeams = allTeams;
-            renderPage(1);
+    // Initialize the page
+    document.addEventListener('DOMContentLoaded', function() {
+        fetchData();
+    });
+
+    async function fetchData() {
+        try {
+            // In a real scenario, you would fetch from data.json
+            // For demo, we'll create mock data if fetch fails
+            let data;
+
+            try {
+                const response = await fetch("data.json");
+                if (!response.ok) throw new Error("Network response was not ok");
+                data = await response.json();
+            } catch (error) {
+                console.log("Using demo data:", error);
+                data = generateDemoData();
+            }
+
+            tableData = data;
+            processTeamsData();
+        } catch (error) {
+            console.error("Error loading data:", error);
+            document.getElementById('loading').innerHTML =
+                '<i class="fas fa-exclamation-triangle"></i> Failed to load data. Please refresh.';
+        }
+    }
+
+    function processTeamsData() {
+        allTeams = tableData.teams
+            .map(t => ({
+                ...t,
+                total: t.scores.reduce((a,b) => a + b, 0),
+                initials: getInitials(t.name)
+            }))
+            .sort((a,b) => b.total - a.total);
+
+        // Calculate percentile ranges
+        const totalTeams = allTeams.length;
+        const goldCutoff = Math.ceil(totalTeams * PERCENTILES.GOLD);
+        const silverCutoff = Math.ceil(totalTeams * PERCENTILES.SILVER);
+        const bronzeCutoff = Math.ceil(totalTeams * PERCENTILES.BRONZE);
+
+        // Add percentile info to each team
+        allTeams = allTeams.map((team, index) => {
+            const rank = index + 1;
+            let percentile = 'default';
+
+            if (rank <= goldCutoff) {
+                percentile = 'gold';
+            } else if (rank <= silverCutoff) {
+                percentile = 'silver';
+            } else if (rank <= bronzeCutoff) {
+                percentile = 'bronze';
+            }
+
+            return {
+                ...team,
+                rank,
+                percentile
+            };
         });
 
+        filteredTeams = allTeams;
+        renderStats();
+        renderPage(1);
+
+        // Hide loading, show table
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('scoreTable').style.display = 'table';
+        document.getElementById('pagination').style.display = 'flex';
+    }
+
+    function renderStats() {
+        const totalTeams = allTeams.length;
+        const goldCutoff = Math.ceil(totalTeams * PERCENTILES.GOLD);
+        const silverCutoff = Math.ceil(totalTeams * PERCENTILES.SILVER);
+        const bronzeCutoff = Math.ceil(totalTeams * PERCENTILES.BRONZE);
+
+        const avgScore = totalTeams > 0
+            ? Math.round(allTeams.reduce((sum, t) => sum + t.total, 0) / totalTeams)
+            : 0;
+        const topScore = totalTeams > 0 ? allTeams[0].total : 0;
+
+        document.getElementById('totalTeams').textContent = totalTeams;
+        document.getElementById('avgScore').textContent = avgScore;
+        document.getElementById('topScore').textContent = topScore;
+
+        // Update percentile info in stats
+        const statsHTML = `
+            <div class="stat-card">
+                <div class="stat-value">${goldCutoff}</div>
+                <div class="stat-label">Gold (Top 10%)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">${silverCutoff - goldCutoff}</div>
+                <div class="stat-label">Silver (10-20%)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">${bronzeCutoff - silverCutoff}</div>
+                <div class="stat-label">Bronze (20-30%)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="filteredCount">${filteredTeams.length}</div>
+                <div class="stat-label">Displayed Teams</div>
+            </div>
+        `;
+
+        document.querySelector('.stats-bar').innerHTML = statsHTML;
+        updateResultsCount();
+    }
+
+    function updateResultsCount() {
+        document.getElementById('filteredCount').textContent = filteredTeams.length;
+        document.getElementById('resultsCount').textContent = Math.min(PAGE_SIZE, filteredTeams.length);
+        document.getElementById('totalCount').textContent = filteredTeams.length;
+    }
+
     function applySearch() {
-        const q = document
-            .getElementById("searchBox")
-            .value
+        const q = document.getElementById("searchBox").value
             .toLowerCase()
             .replace(/\s+/g, " ")
             .trim();
 
         filteredTeams = q
-            ? allTeams.filter(t =>
-                t.name.toLowerCase().includes(q)
-            )
+            ? allTeams.filter(t => t.name.toLowerCase().includes(q))
             : allTeams;
 
+        // Show/hide empty state
+        const emptyState = document.getElementById('emptyState');
+        if (filteredTeams.length === 0) {
+            emptyState.style.display = 'block';
+            document.getElementById('scoreTable').style.display = 'none';
+            document.getElementById('pagination').style.display = 'none';
+        } else {
+            emptyState.style.display = 'none';
+            document.getElementById('scoreTable').style.display = 'table';
+            document.getElementById('pagination').style.display = 'flex';
+        }
+
+        updateResultsCount();
         renderPage(1);
     }
 
     function renderPage(page) {
         currentPage = page;
-
         const start = (page - 1) * PAGE_SIZE;
         const end = start + PAGE_SIZE;
         const teams = filteredTeams.slice(start, end);
 
-        const n = filteredTeams.length;
-        const top10 = Math.ceil(n * 0.10);
-        const top20 = Math.ceil(n * 0.20);
-        const top40 = Math.ceil(n * 0.40);
-
+        // Build table header
         const header = `
-        <tr>
-            <th>#</th>
-            <th>Team Name</th>
-            ${tableData.factors.map(f=>`<th>${f}</th>`).join("")}
-            <th>Total</th>
-        </tr>`;
+            <thead>
+                <tr>
+                    <th width="80">Rank</th>
+                    <th>Team Name</th>
+                    ${tableData.factors.map(f => `<th width="100">${f}</th>`).join("")}
+                    <th width="120">Total Score</th>
+                </tr>
+            </thead>
+            <tbody>
+        `;
 
-        const rows = teams.map((t,i)=>{
-            const idx = start + i;
-            let cls = "";
-            if (idx < top10) cls = "top-10";
-            else if (idx < top20) cls = "top-20";
-            else if (idx < top40) cls = "top-40";
+        // Build table rows
+        const rows = teams.map((t, i) => {
+            const globalRank = t.rank;
+            const pageRank = start + i + 1;
+
+            // Determine percentile class for row and rank badge
+            let rowClass = '';
+            let rankClass = '';
+
+            switch(t.percentile) {
+                case 'gold':
+                    rowClass = 'gold-percentile';
+                    rankClass = 'rank-gold';
+                    break;
+                case 'silver':
+                    rowClass = 'silver-percentile';
+                    rankClass = 'rank-silver';
+                    break;
+                case 'bronze':
+                    rowClass = 'bronze-percentile';
+                    rankClass = 'rank-bronze';
+                    break;
+                default:
+                    rowClass = 'default-percentile';
+                    rankClass = 'rank-default';
+            }
 
             return `
-        <tr class="${cls}">
-            <td><span class="rank-circle">${idx+1}</span></td>
-            <td style="text-align:left">${t.name}</td>
-            ${t.scores.map(s=>`<td>${s}</td>`).join("")}
-            <td class="total-score">${t.total}</td>
-        </tr>`;
+                <tr class="${rowClass}">
+                    <td class="rank-cell">
+                        <div class="rank-badge ${rankClass}">${globalRank}</div>
+                    </td>
+                    <td>
+                        <div class="team-name">
+                            <div class="team-avatar">${t.initials}</div>
+                            ${t.name}
+                        </div>
+                    </td>
+                    ${t.scores.map(s => `<td class="score-cell">${s}</td>`).join("")}
+                    <td class="total-score">${t.total}</td>
+                </tr>
+            `;
         }).join("");
 
-        document.getElementById("scoreTable").innerHTML = header + rows;
+        document.getElementById("scoreTable").innerHTML = header + rows + "</tbody>";
 
-        const totalPages = Math.ceil(n / PAGE_SIZE);
+        // Update pagination
+        const totalPages = Math.ceil(filteredTeams.length / PAGE_SIZE);
         document.getElementById("pagination").innerHTML = `
-        <button onclick="renderPage(${page-1})" ${page===1?"disabled":""}>Prev</button>
-        Page ${page} / ${totalPages}
-        <button onclick="renderPage(${page+1})" ${page===totalPages?"disabled":""}>Next</button>
-    `;
+            <button onclick="renderPage(${page-1})" ${page === 1 ? "disabled" : ""}>
+                <i class="fas fa-chevron-left"></i> Previous
+            </button>
+            <div class="page-info">Page ${page} of ${totalPages}</div>
+            <button onclick="renderPage(${page+1})" ${page === totalPages || totalPages === 0 ? "disabled" : ""}>
+                Next <i class="fas fa-chevron-right"></i>
+            </button>
+        `;
+
+        // Update results count for current page
+        document.getElementById('resultsCount').textContent =
+            `${Math.min(PAGE_SIZE * (page-1) + 1, filteredTeams.length)}-${Math.min(PAGE_SIZE * page, filteredTeams.length)}`;
+    }
+
+    // Helper functions
+    function getInitials(name) {
+        return name
+            .split(' ')
+            .map(word => word[0])
+            .join('')
+            .toUpperCase()
+            .substring(0, 3);
+    }
+
+    function generateDemoData() {
+        const factors = ["Innovation", "Design", "Functionality", "Impact", "Presentation"];
+        const teams = [];
+        const teamNames = [
+            "Quantum Coders", "Frost Byte", "Arctic Innovators", "Winter Wolves",
+            "Snowflake Devs", "Polar Bears Tech", "Iceberg Solutions", "Frozen Logic",
+            "Glacier Hackers", "Aurora Team", "Blizzard Coders", "Tundra Tech",
+            "Frostbite Dev", "Snowstorm Solutions", "Ice Code Collective",
+            "Team Alpha", "Team Beta", "Team Gamma", "Team Delta", "Team Epsilon",
+            "Team Zeta", "Team Eta", "Team Theta", "Team Iota", "Team Kappa",
+            "Team Lambda", "Team Mu", "Team Nu", "Team Xi", "Team Omicron"
+        ];
+
+        for (let i = 0; i < 150; i++) {
+            const name = i < teamNames.length ? teamNames[i] : `Team ${i+1}`;
+            const scores = factors.map(() => Math.floor(Math.random() * 30) + 60);
+            teams.push({ name, scores });
+        }
+
+        return { factors, teams };
     }
 </script>
 </body>
