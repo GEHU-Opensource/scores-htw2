@@ -891,20 +891,11 @@
 
 <script>
     // Countdown to Today at 10:30 PM
-    function getLaunchTime() {
-        const now = new Date();
-        const launchTime = new Date();
-
-        // Set launch time to today at 10:30 PM
-        launchTime.setHours(22, 30, 0, 0); // 10:30 PM
-
-        // If it's already past 10:30 PM today, set for tomorrow
-        //if (now > launchTime) {
-          //launchTime.setDate(launchTime.getDate() + 1);
-        //}
-
-        return launchTime;
-    }
+    // Countdown to 10 January 2026 at 10:30 PM
+function getLaunchTime() {
+    // Month is 0-based: January = 0
+    return new Date(2026, 0, 10, 22, 30, 0, 0);
+}
 
     let launchTime = getLaunchTime();
     let countdownInterval;
