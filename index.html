@@ -890,7 +890,7 @@
 </div>
 
 <script>
-    // Countdown to Today at 10:15 PM
+    // Countdown to Today at 10:30 PM
     function getLaunchTime() {
         const now = new Date();
         const launchTime = new Date();
@@ -899,9 +899,9 @@
         launchTime.setHours(22, 30, 0, 0); // 10:30 PM
 
         // If it's already past 10:30 PM today, set for tomorrow
-        if (now > launchTime) {
-            launchTime.setDate(launchTime.getDate() + 1);
-        }
+        //if (now > launchTime) {
+          //launchTime.setDate(launchTime.getDate() + 1);
+        //}
 
         return launchTime;
     }
@@ -942,9 +942,24 @@
 
     function updateCountdownDisplay() {
         const now = new Date();
-        const timeLeft = launchTime - now;
+        let timeLeft = launchTime - now;
 
-        // Calculate hours, minutes, seconds
+        // Stop countdown when time is up
+        if (timeLeft <= 0) {
+            timeLeft = 0;
+
+            document.getElementById('hours').textContent = "00";
+            document.getElementById('minutes').textContent = "00";
+            document.getElementById('seconds').textContent = "00";
+            document.getElementById('loadingProgress').style.width = "100%";
+
+            if (!resultsRevealed) {
+                revealResults();
+            }
+            return;
+        }
+
+        // Normal countdown calculation
         const hours = Math.floor(timeLeft / (1000 * 60 * 60));
         const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
@@ -960,9 +975,9 @@
         document.getElementById('loadingProgress').style.width = progressPercentage + '%';
 
         // Show skip button when less than 30 minutes left
-        if (timeLeft < 30 * 60 * 1000) {
-            document.getElementById('showResultsBtn').style.display = 'block';
-        }
+        // if (timeLeft < 30 * 60 * 1000) {
+        //    document.getElementById('showResultsBtn').style.display = 'block';
+        // }
 
         // Change color when less than 5 minutes
         if (timeLeft < 5 * 60 * 1000) {
